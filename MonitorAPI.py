@@ -26,3 +26,7 @@ class MonitorAPI(object):
    def ping(self):
       response = self.sendMessage('GET', '/v1/ping', '')
       return response
+
+   def status(self):
+      response = self.sendMessage('GET', '/v1/status', '')
+      return response
