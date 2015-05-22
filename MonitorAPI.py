@@ -4,13 +4,15 @@
 import urllib
 import urllib2
 import json
+import jwt
 
 class MonitorAPI(object):
 
-   def __init__(self, url, secret, identifier):
+   def __init__(self, url, secret, identifier, expiration):
       self.server = url.rstrip('/')
       self.secret = secret
       self.identifier = identifier
+      self.expiration = expiration
 
    def sendMessage(self, method, command, jwt):
       url = self.server+command
@@ -30,3 +32,20 @@ class MonitorAPI(object):
    def status(self):
       response = self.sendMessage('GET', '/v1/status', '')
       return response
+
+   def updateStatus(self, status):
+      response = self.ping()
+      serverTime = response['time']
+      jwt = self.createStatusJWT(status, serverTime)
+      response = self.sendMessage('POST', '/v1/update', jwt)
+      return response
+
+   def createStatusJWT(self, status, currentTime):
+      return self.createJWT({
+         'status': status,
+         'time': currentTime,
+         'exp': currentTime+self.expiration
+      })
+
+   def createJWT(self, data):
+      return jwt.encode(data, self.secret, algorithm='HS512')

@@ -9,6 +9,10 @@ from MonitorAPI import MonitorAPI
 config = ConfigParser.RawConfigParser()
 config.read('app.cfg')
 
-api = MonitorAPI(config.get('Server', 'url'), config.get('Server', 'secret'), config.get('App', 'identifier'))
-print api.ping()
-print api.status()
+api = MonitorAPI(
+   config.get('Server', 'url'),
+   config.get('Server', 'secret'),
+   config.get('App', 'identifier'),
+   config.getint('App', 'expiration')
+)
+print api.updateStatus('open')
