@@ -5,6 +5,7 @@ import sys
 import os
 import ConfigParser
 from MonitorAPI import MonitorAPI
+from SerialReceiver import SerialReceiver
 
 config = ConfigParser.RawConfigParser()
 config.read('app.cfg')
@@ -15,4 +16,8 @@ api = MonitorAPI(
    config.get('App', 'identifier'),
    config.getint('App', 'expiration')
 )
-print api.updateStatus('open')
+
+serial = SerialReceiver(
+   config.get('Serial', 'port'),
+   config.get('Serial', 'baudrate')
+)
