@@ -21,3 +21,9 @@ serial = SerialReceiver(
    config.get('Serial', 'port'),
    config.get('Serial', 'baudrate')
 )
+
+while 1:
+   data = serial.getDataFromReceiver()
+   print "Received: "
+   print data
+
