@@ -24,6 +24,8 @@ serial = SerialReceiver(
 
 while 1:
    data = serial.getDataFromReceiver()
-   print "Received: "
-   print data
+   if data != None:
+      print "Received: "
+      print data
+      api.updateStatus(data['status'], data['voltage'], data['identifier'])
 
