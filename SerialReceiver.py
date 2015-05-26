@@ -2,6 +2,7 @@
 # Copyright 2015 Ethan Smith
 
 import serial
+import time
 
 class SerialReceiver(object):
 
@@ -13,12 +14,21 @@ class SerialReceiver(object):
       return self.processData(data)
 
    def waitForData(self):
-      data = self.serial.read()
-      time.sleep(1)
-      extraData = self.serial.inWaiting()
-      data += self.serial.read(extraData)
-      return data
+      line = ""
+      while len(line) < 1:
+         time.sleep(1)
+         line = self.serial.readline()
+      return line
+
 
    def processData(self, data):
-      return data
+      divided = data.split('-') # jvwf8-5.36-0
 
+      if len(divided) < 3:
+         return None
+
+      return {
+         "identifier": divided[0],
+         "voltage": divided[1],
+         "status": "open" if divided[2] == "0" else "closed"
+      }
