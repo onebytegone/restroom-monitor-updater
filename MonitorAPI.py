@@ -33,17 +33,20 @@ class MonitorAPI(object):
       response = self.sendMessage('GET', '/v1/status', '')
       return response
 
-   def updateStatus(self, status):
+   def updateStatus(self, status, voltage = "", remoteIdent = ""):
       response = self.ping()
       serverTime = response['time']
-      jwt = self.createStatusJWT(status, serverTime)
+      jwt = self.createStatusJWT(status, voltage, remoteIdent, serverTime)
       response = self.sendMessage('POST', '/v1/update', jwt)
       return response
 
-   def createStatusJWT(self, status, currentTime):
+   def createStatusJWT(self, status, voltage, remoteIdent, currentTime):
       return self.createJWT({
          'status': status,
+         'voltage': voltage,
+         'remoteIdent': remoteIdent,
          'time': currentTime,
+         'identifier': self.identifier,
          'exp': currentTime+self.expiration
       })
 
