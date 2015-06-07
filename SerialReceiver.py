@@ -22,7 +22,7 @@ class SerialReceiver(object):
 
 
    def processData(self, data):
-      divided = data.split('-') # jvwf8-5.36-0
+      divided = data.strip().split('-') # jvwf8-5.36-0
 
       if len(divided) < 3:
          return None
