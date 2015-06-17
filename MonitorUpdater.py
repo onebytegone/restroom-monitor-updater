@@ -6,6 +6,7 @@ import os
 import ConfigParser
 from MonitorAPI import MonitorAPI
 from SerialReceiver import SerialReceiver
+import urllib2
 
 config = ConfigParser.RawConfigParser()
 config.read('app.cfg')
@@ -27,5 +28,9 @@ while 1:
    if data != None:
       print "Received: "
       print data
-      api.updateStatus(data['status'], data['voltage'], data['identifier'])
+      try:
+         api.updateStatus(data['status'], data['voltage'], data['identifier'])
+      except urllib2.HTTPError as e:
+        print e.code
+        print e.read()
 
