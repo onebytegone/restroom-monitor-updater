@@ -1,5 +1,6 @@
 # restroom-monitor-updater
 
+This is a bridge between the serial data from the Ardunio and the web API.
 
 
 ## Sections for project
